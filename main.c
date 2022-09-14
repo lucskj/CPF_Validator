@@ -1,57 +1,81 @@
 #include <stdio.h>
+#include <locale.h>
 
-int * intToArray(int);
+int checkFirstDigit(char *);
+int checkSecondDigit(char *);
 
 int main(int argc, char const *argv[]) {
-    int cpf;
-    printf("Digite o CPF, com n√∫meros apenas: ");
-    int qtdInput = scanf("%d", &cpf);
+    setlocale(LC_ALL, "Portuguese");
+    char cpf[12] = {0};
+    int firstResult, secondResult;
 
-    switch (qtdInput) {
-        case 1: ;
-            int firstResult, secondResult, *digits;
-            digits = intToArray(cpf);
-
-            for (int i = 0; i < 11; i++ ) {
-                printf( "%d\n", digits[i]);
-            }
-            /*
-            firstResult = checkFirstDigit(digits);
-            if (firstResult == 1) {
-                secondResult = checkSecondDigit(digits);
-            }
-
-            if (secondResult == 1) {
-                printf("CPF V√°lido.");
-            }
-            else {
-                printf("CPF Inv√°lido");
-            }*/
-
+    printf("Digite o CPF, com n˙meros apenas: ");
+    fgets(cpf, sizeof(cpf), stdin);
+    
+    firstResult = checkFirstDigit(cpf);
+    switch (firstResult) {
+    case 1:
+        secondResult = checkSecondDigit(cpf);
+        switch (secondResult) {
+        case 1:
+            printf("CPF V·lido.");
             break;
         default:
-            printf("Entrada inv√°lida.");
+            printf("CPF Inv·lido");
+            break;
+        }
+        break;
+    default:
+        break;
     }
 
-
     return 0;
-
-    
 }
 
-int checkFirstDigit(int cpf) {}
+int checkFirstDigit(char *cpf) {
+    int totalSum = 0;
+    int i, partialResult, factor;
 
-int * intToArray(int n)
-{
-    static int digits[11];
-    int digit;
-    int i = 0;
+    for (i = 0, factor = 10; i < 9; i++, factor--) {
+        int currentNumber = cpf[i] - '0';
+        currentNumber *= factor;
+        totalSum += currentNumber;
+    }
 
-    do {
-        digit = n % 10;
-        digits[i] = digit;
-        i++;
-    } while ((n/=10) > 0);
+    if ((totalSum % 11) < 2) {
+        partialResult = 0;
+    }
+    else {
+        partialResult = 11 - partialResult; 
+    }
 
-    return digits;
+    if (partialResult == (cpf[9] - '0')) {
+        return 1;
+    }
+
+    return 0;
+}
+
+int checkSecondDigit(char *cpf) {
+    int totalSum = 0;
+    int i, partialResult, factor;
+
+    for (i = 0, factor = 11; i < 10; i++, factor--) {
+        int currentNumber = cpf[i] - '0';
+        currentNumber *= factor;
+        totalSum += currentNumber;
+    }
+
+    if ((totalSum % 11) < 2) {
+        partialResult = 0;
+    }
+    else {
+        partialResult = 11 - partialResult;
+    }
+
+    if (partialResult == cpf[10] - '0') {
+        return 1;
+    }
+    
+    return 0;
 }
