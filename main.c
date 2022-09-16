@@ -1,31 +1,30 @@
 #include <stdio.h>
-#include <locale.h>
 
 int checkFirstDigit(char *);
 int checkSecondDigit(char *);
 
 int main(int argc, char const *argv[]) {
-    setlocale(LC_ALL, "Portuguese");
     char cpf[12] = {0};
     int firstResult, secondResult;
 
-    printf("Digite o CPF, com números apenas: ");
+    printf("Digite o CPF, com numeros apenas: ");
     fgets(cpf, sizeof(cpf), stdin);
     
     firstResult = checkFirstDigit(cpf);
     switch (firstResult) {
+    case 0:
+        printf("CPF Invalido.");
+        break;
     case 1:
         secondResult = checkSecondDigit(cpf);
         switch (secondResult) {
         case 1:
-            printf("CPF Válido.");
+            printf("CPF Valido.");
             break;
         default:
-            printf("CPF Inválido");
+            printf("CPF Invalido.");
             break;
         }
-        break;
-    default:
         break;
     }
 
