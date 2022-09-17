@@ -1,31 +1,51 @@
 #include <stdio.h>
+#include <string.h>
 
 int checkFirstDigit(char *);
 int checkSecondDigit(char *);
+int specificCase(char *);
+int validateCPF(char *);
 
 int main(int argc, char const *argv[]) {
     char cpf[12] = {0};
-    int firstResult, secondResult;
 
     printf("Digite o CPF, com numeros apenas: ");
     fgets(cpf, sizeof(cpf), stdin);
-    
-    firstResult = checkFirstDigit(cpf);
-    switch (firstResult) {
-    case 0:
-        printf("CPF Invalido.");
-        break;
-    case 1:
-        secondResult = checkSecondDigit(cpf);
-        switch (secondResult) {
-        case 1:
-            printf("CPF Valido.");
+
+    switch(validateCPF(cpf)) {
+        case 0:
+            printf("CPF invalido.");
             break;
-        default:
-            printf("CPF Invalido.");
+        case 1:
+            printf("CPF valido.");
+            break;
+    }
+
+    return 0;
+}
+
+int validateCPF(char *cpf) {
+    switch (specificCase(cpf)) {
+    case 1:
+        switch (checkFirstDigit(cpf)) {
+        case 1:
+            switch (checkSecondDigit(cpf)) {
+            case 1:
+                return 1;
+            }
             break;
         }
         break;
+    }
+
+    return 0;
+}
+
+int specificCase(char *cpf) {
+    for(int i = 0; i < strlen(cpf)-1; i++) {
+        if (cpf[i] != cpf[i+1]) {
+            return 1;
+        }
     }
 
     return 0;
@@ -45,7 +65,7 @@ int checkFirstDigit(char *cpf) {
         partialResult = 0;
     }
     else {
-        partialResult = 11 - partialResult; 
+        partialResult = 11 - (totalSum % 11); 
     }
 
     if (partialResult == (cpf[9] - '0')) {
@@ -69,7 +89,7 @@ int checkSecondDigit(char *cpf) {
         partialResult = 0;
     }
     else {
-        partialResult = 11 - partialResult;
+        partialResult = 11 - (totalSum % 11);
     }
 
     if (partialResult == cpf[10] - '0') {
