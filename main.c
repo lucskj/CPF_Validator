@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 
-int checkFirstDigit(char *);
-int checkSecondDigit(char *);
-int specificCase(char *);
-int validateCPF(char *);
+int checkFirstDigit(char[12]);
+int checkSecondDigit(char[12]);
+int specificCase(char[12]);
+int validateCPF(char[12]);
 
 int main(int argc, char const *argv[]) {
     char cpf[12] = {0};
@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
     return 0;
 }
 
-int validateCPF(char *cpf) {
+int validateCPF(char cpf[12]) {
     switch (specificCase(cpf)) {
     case 1:
         switch (checkFirstDigit(cpf)) {
@@ -41,7 +41,7 @@ int validateCPF(char *cpf) {
     return 0;
 }
 
-int specificCase(char *cpf) {
+int specificCase(char cpf[12]) {
     for(int i = 0; i < strlen(cpf)-1; i++) {
         if (cpf[i] != cpf[i+1]) {
             return 1;
@@ -51,7 +51,7 @@ int specificCase(char *cpf) {
     return 0;
 }
 
-int checkFirstDigit(char *cpf) {
+int checkFirstDigit(char cpf[12]) {
     int totalSum = 0;
     int i, partialResult, factor;
 
@@ -75,7 +75,7 @@ int checkFirstDigit(char *cpf) {
     return 0;
 }
 
-int checkSecondDigit(char *cpf) {
+int checkSecondDigit(char cpf[12]) {
     int totalSum = 0;
     int i, partialResult, factor;
 
